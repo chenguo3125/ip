@@ -1,4 +1,6 @@
 import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Milly {
     public static void main(String[] args) {
@@ -6,6 +8,7 @@ public class Milly {
         String hi = " Hello! I'm [YOUR CHATBOT NAME]\n" +
                 " What can I do for you?\n";
         System.out.println(hi);
+        List<String> todo = new ArrayList<>();
 
         while (true) {
             System.out.println("You: ");
@@ -14,8 +17,16 @@ public class Milly {
             if (input.equals("bye")) {
                 System.out.println("Milly: \nBye~ See u soon :DD");
                 break;
+            } else if (input.equals("list")) {
+                int x = 1;
+                System.out.println("list: \n");
+                while (x <= todo.size()) {
+                    System.out.println(x +". " + todo.get(x - 1));
+                    x++;
+                }
             } else {
-                System.out.println("Milly: \n" + input);
+                System.out.println("Milly: \n" + "added: " + input);
+                todo.add(input);
             }
         }
     }
