@@ -16,4 +16,6 @@ iyaaa! (marked!)
 [T][X] do ps100
 iya-ha! (unmarked!)
 [T][ ] do ps100
+Ura? (deadline must be followed by a description and a /by)
+Ura? (Usagi cannot understand ur gibberish)
 Yiaaa~~~~haaa~~~~~(bye~~~~~)
