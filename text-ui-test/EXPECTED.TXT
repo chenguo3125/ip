@@ -18,4 +18,6 @@ iya-ha! (unmarked!)
 [T][ ] do ps100
 Ura? (deadline must be followed by a description and a /by)
 Ura? (Usagi cannot understand ur gibberish)
+[D][ ] do ps101 (by: tmr)
+Ura! (remove! now u have 2 tasks in the list.)
 Yiaaa~~~~haaa~~~~~(bye~~~~~)
