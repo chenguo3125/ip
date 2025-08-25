@@ -1,0 +1,7 @@
+todo do ps100
+deadline do ps101 /by tmr
+event crying /from today /to weekend
+list
+mark 1
+unmark 1
+bye

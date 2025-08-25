@@ -5,21 +5,20 @@ import java.util.ArrayList;
 public class Usagi {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        String hi = " Ura! Ura-yaha-yiaha!\n" +
-                " Una-una?\n";
+        String hi = "Ura! Ura-yaha-yiaha!\n" +
+                "Una-una?\n";
         System.out.println(hi);
         List<Task> todo = new ArrayList<>();
 
         while (true) {
-            System.out.println("You: ");
             String input = scanner.nextLine();
 
             if (input.equals("bye")) {
-                System.out.println("537: \nYiaaa~~~~haaa~~~~~(bye~~~~~)");
+                System.out.println("Yiaaa~~~~haaa~~~~~(bye~~~~~)");
                 break;
             } else if (input.equals("list")) {
                 int x = 1;
-                System.out.println("Yiaha~(here is the list) \nlist: \n");
+                System.out.println("Yiaha~(here is the list)\nlist:");
                 while (x <= todo.size()) {
                     System.out.println(x +". " + todo.get(x - 1).toString());
                     x++;
@@ -55,9 +54,9 @@ public class Usagi {
                     Task task = new Event(p1[1], p2[0], p2[1]);
                     todo.add(task);
                 } else {
-                    System.out.println("Usagi: \n" + "Ura? (Usagi cant understand the gibberish u r talking about?");
+                    System.out.println("Ura? (Usagi cant understand the gibberish u r talking about?");
                 }
-                System.out.println("Usagi: \n" + todo.get(todo.size() - 1).toString() + " \nUra! (now u have " + todo.size() + " tasks in the list.)");
+                System.out.println(todo.get(todo.size() - 1).toString() + "\nUra! (now u have " + todo.size() + " tasks in the list.)");
             }
         }
     }
