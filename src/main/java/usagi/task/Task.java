@@ -1,3 +1,5 @@
+package usagi.task;
+
 /**
  * Represents a task with title, completion status and respective time information.
  *

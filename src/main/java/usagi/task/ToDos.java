@@ -1,3 +1,5 @@
+package usagi.task;
+
 /**
  * Represents a Deadline task with title and completion status.
  * This is a concrete class inherited from the abstract Task class.
