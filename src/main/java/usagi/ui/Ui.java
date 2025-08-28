@@ -1,5 +1,8 @@
+package usagi.ui;
+
 import java.util.List;
 import java.util.Scanner;
+import usagi.task.Task;
 
 public class Ui {
     private final Scanner scanner = new Scanner(System.in);

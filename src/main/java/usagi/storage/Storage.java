@@ -1,3 +1,5 @@
+package usagi.storage;
+
 /**
  * Handles the persistence of tasks to and from the hard disk.
  * <p>
@@ -16,6 +18,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Collectors;
+import usagi.task.Task;
+import usagi.exception.UsagiException;
 
 public class Storage {
     private final Path filePath;

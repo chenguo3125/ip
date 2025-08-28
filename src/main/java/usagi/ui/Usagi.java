@@ -1,8 +1,14 @@
+package usagi.ui;
+
 /**
  * A chatbot called Usagi.
  */
 
 import java.util.Scanner;
+import usagi.storage.Storage;
+import usagi.task.TaskList;
+import usagi.parser.Parser;
+import usagi.exception.UsagiException;
 
 public class Usagi {
     private Storage storage;
