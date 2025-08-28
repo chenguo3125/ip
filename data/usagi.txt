@@ -1,3 +1,3 @@
 T | 0 | ps1
-D | 0 | wireframe | today
-E | 0 | hackthon | today | friday
+D | 0 | wireframe | 2/12/2025
+E | 0 | hackthon | 2/18/2025 | 2/19/2025
