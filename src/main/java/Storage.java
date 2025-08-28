@@ -18,33 +18,10 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Storage {
-    /**
-     * Candidate file paths for storing data.
-     * <p>
-     * The first path corresponds to {@code ./data/usagi.txt} (from project root).
-     * The second path corresponds to {@code ../data/usagi.txt} (useful when running
-     * from a subfolder such as {@code text-ui-test}).
-     * </p>
-     */
-    private static final List<Path> CANDIDATES = List.of(
-            Path.of("data", "usagi.txt"),
-            Path.of("..", "data", "usagi.txt")
-    );
+    private final Path filePath;
 
-    /**
-     * Selects a path to load tasks from.
-     * <p>
-     * Prefers the first candidate path that exists on disk.
-     * If none exist, defaults to the first candidate ({@code ./data/usagi.txt}).
-     * </p>
-     *
-     * @return the chosen path for loading tasks
-     */
-    private Path pickLoadPath() {
-        for (Path p : CANDIDATES) {
-            if (Files.exists(p)) return p;
-        }
-        return CANDIDATES.get(0);
+    public Storage(String filePath) {
+        this.filePath = Path.of(filePath);
     }
 
     /**
@@ -70,12 +47,10 @@ public class Storage {
      *
      * @return a list of tasks loaded from the storage file
      */
-    List<Task> load() {
-        Path p = pickLoadPath();
-        if (!Files.exists(p)) return new ArrayList<>();
-
+    List<Task> load() throws UsagiException {
         try {
-            List<String> lines = Files.readAllLines(p, StandardCharsets.UTF_8);
+            if (!Files.exists(filePath)) return new ArrayList<>();
+            List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
             List<Task> tasks = new ArrayList<>();
             for (String line : lines) {
                 String s = line.strip();
@@ -84,10 +59,10 @@ public class Storage {
             }
             return tasks;
         } catch (IOException e) {
-            System.err.println("Load failed from " + p + ": " + e.getMessage());
-            return new ArrayList<>();
+            throw new UsagiException("Load failed from " + filePath, e);
         }
     }
+
 
     /**
      * Saves the given list of tasks to the storage file.
@@ -98,21 +73,17 @@ public class Storage {
      *
      * @param tasks the list of tasks to save
      */
-    void save(List<Task> tasks) {
-        for (Path target : CANDIDATES) {
-            try {
-                ensureParentDirs(target);
-                List<String> lines = tasks.stream()
-                        .map(Task::toLine)
-                        .collect(Collectors.toList());
-                Files.write(target, lines,
-                        StandardOpenOption.CREATE,
-                        StandardOpenOption.TRUNCATE_EXISTING);
-                return; // success
-            } catch (IOException e) {
-                // try next candidate
-            }
+    void save(List<Task> tasks) throws UsagiException {
+        try {
+            ensureParentDirs(filePath);
+            List<String> lines = tasks.stream()
+                    .map(Task::toLine)
+                    .collect(Collectors.toList());
+            Files.write(filePath, lines,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            throw new UsagiException("Save failed to " + filePath, e);
         }
-        System.err.println("Save failed: could not write to any candidate path.");
     }
 }
