@@ -1,12 +1,5 @@
 package usagi.task;
 
-/**
- * Represents a task with title, completion status and respective time information.
- *
- * This is an abstract class meant to be extended by concrete task types
- * like {@link Todo}, {@link Deadline}, and {@link Event}.
- */
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -15,34 +8,51 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Represents a task with title, completion status and respective time information.
+ *
+ * This is an abstract class meant to be extended by concrete task types
+ * like ToDos, Deadline, and Event.
+ */
+
 public abstract class Task {
     protected String title;
     protected Boolean isDone;
 
     /**
-     * Returns the type of the Task from "T", "D", "E".
+     * Returns the type identifier of the task.
+     * 
+     * @return The type identifier ("T" for Todo, "D" for Deadline, "E" for Event)
      */
     abstract String type();
 
     /**
-     * Returns the additional time information of the task.
+     * Returns additional information specific to the task type.
+     * 
+     * @return An array of strings containing task-specific information
      */
     abstract String[] extra();
 
+    /**
+     * Constructs a new Task with the specified title and completion status.
+     * 
+     * @param title The title/description of the task
+     * @param done The completion status of the task
+     */
     public Task(String title, boolean done) {
         this.title = title;
         this.isDone = done;
     }
 
     /**
-     * Changes the completion status of a task isDone to true.
+     * Marks the task as completed.
      */
     public void mark() {
         this.isDone = true;
     }
 
     /**
-     * Changes the completion status of a task isDone to false.
+     * Marks the task as not completed.
      */
     public void unmark() {
         this.isDone = false;
@@ -51,7 +61,9 @@ public abstract class Task {
 
 
     /**
-     * Returns a String representation of the Task for save in storage.
+     * Returns a string representation of the task for storage.
+     * 
+     * @return A string representation suitable for saving to file
      */
     public String toLine() {
         List<String> parts = new ArrayList<>();
@@ -63,9 +75,11 @@ public abstract class Task {
     }
 
     /**
-     * Returns a Task from its String representation for load in storage.
+     * Creates a Task from its string representation.
      *
-     * @param line String representation of the task. (task.toLine())
+     * @param line The string representation of the task (from task.toLine())
+     * @return A Task object created from the string representation
+     * @throws IllegalArgumentException If the string format is invalid
      */
     public static Task fromLine(String line) {
         String[] p = line.split("\\s*\\|\\s*"); // splits on ' | ' with spaces ok
@@ -78,6 +92,7 @@ public abstract class Task {
         }
     }
 
+    @Override
     public String toString() {
         if (isDone) {
             return "[X] " + this.title;
@@ -87,9 +102,13 @@ public abstract class Task {
     }
 
     /**
-     * Returns a LocalDate from the user input of the date.
+     * Parses a date string in various formats and returns a LocalDate.
+     * 
+     * Supports ISO format (yyyy-MM-dd), day/month/year, and month/day/year formats.
      *
-     * @param raw String input of the date from the user.
+     * @param raw The date string to parse
+     * @return A LocalDate object representing the parsed date
+     * @throws IllegalArgumentException If the date string cannot be parsed
      */
     public static LocalDate parseDateFlexible(String raw) {
         try { return LocalDate.parse(raw); } catch (DateTimeParseException ignore) {}
@@ -103,9 +122,14 @@ public abstract class Task {
     }
 
     /**
-     * Returns a LocalDateTime from the user input of the date with time.
+     * Parses a date-time string in various formats and returns a LocalDateTime.
+     * 
+     * Supports ISO format, date with time (HHmm), and falls back to start of day
+     * if only a date is provided.
      *
-     * @param raw String input of the date with time from the user.
+     * @param raw The date-time string to parse
+     * @return A LocalDateTime object representing the parsed date and time
+     * @throws IllegalArgumentException If the date-time string cannot be parsed
      */
     public static LocalDateTime parseDateTimeFlexible(String raw) {
         try { return LocalDateTime.parse(raw); } catch (DateTimeParseException ignore) {}
@@ -124,9 +148,13 @@ public abstract class Task {
     }
 
     /**
-     * Returns a LocalDateTime from the user input of the date or time.
+     * Parses a date or date-time string and returns a LocalDateTime.
+     * 
+     * This is a convenience method that delegates to parseDateTimeFlexible.
      *
-     * @param raw String input of the date or time from the user.
+     * @param raw The date or date-time string to parse
+     * @return A LocalDateTime object representing the parsed date and time
+     * @throws IllegalArgumentException If the string cannot be parsed
      */
     public static LocalDateTime parseDateTimeOrDate(String raw) {
         return parseDateTimeFlexible(raw);
