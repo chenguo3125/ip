@@ -11,11 +11,33 @@ import usagi.storage.Storage;
 import usagi.ui.Ui;
 import usagi.exception.UsagiException;
 
+/**
+ * Handles parsing and execution of user commands.
+ * 
+ * This class is responsible for interpreting user input and converting it
+ * into appropriate actions on the task list and storage.
+ */
 public class Parser {
+    /**
+     * Checks if the input command is an exit command.
+     * 
+     * @param input The user input to check
+     * @return true if the input is an exit command, false otherwise
+     */
     public static boolean isExit(String input) {
         return input.equals("bye");
     }
 
+    /**
+     * Parses and handles user input commands, performing appropriate actions
+     * on the task list and storage.
+     * 
+     * @param input The user input command to process
+     * @param tasks The task list to operate on
+     * @param storage The storage component for saving tasks
+     * @param ui The user interface component for displaying messages
+     * @throws UsagiException If an error occurs during command processing
+     */
     public static void handle(String input, TaskList tasks, Storage storage, Ui ui) throws UsagiException {
         if (input.equals("list")) {
             ui.showList(tasks.all());
