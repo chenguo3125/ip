@@ -1,7 +1,12 @@
 package usagi.ui;
 
 /**
- * A chatbot called Usagi.
+ * Main chatbot application class that orchestrates the interaction between
+ * user interface, storage, task management, and command parsing.
+ * 
+ * This class serves as the entry point for the Usagi chatbot application,
+ * managing the main application loop and coordinating between different
+ * components of the system.
  */
 
 import java.util.Scanner;
@@ -15,6 +20,11 @@ public class Usagi {
     private TaskList tasks;
     private Ui ui;
 
+    /**
+     * Constructs a new Usagi chatbot instance with the specified file path for data storage.
+     * 
+     * @param filePath The path to the file where tasks will be stored and loaded from
+     */
     public Usagi(String filePath) {
         ui = new Ui();
         storage = new Storage(filePath);
@@ -26,6 +36,10 @@ public class Usagi {
         }
     }
 
+    /**
+     * Starts the main application loop, handling user input and commands
+     * until the user chooses to exit.
+     */
     public void run() {
         ui.showWelcome();
         Scanner scanner = new Scanner(System.in);
@@ -43,6 +57,11 @@ public class Usagi {
         }
     }
 
+    /**
+     * Main entry point for the Usagi chatbot application.
+     * 
+     * @param args Command line arguments (not used)
+     */
     public static void main(String[] args) {
         new Usagi("data/usagi.txt").run();
     }
