@@ -2,6 +2,7 @@ package usagi.parser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import usagi.task.Task;
 import usagi.task.TaskList;
 import usagi.task.Deadline;
@@ -46,6 +47,15 @@ public class Parser {
             String raw = input.substring(3).trim();
             LocalDate date = Task.parseDateFlexible(raw);
             ui.showOnDate(tasks.tasksOn(date));
+            return;
+        } else if (input.startsWith("find ")) {
+            String keyword = input.substring(5).trim();
+            if (keyword.isEmpty()) {
+                ui.showLine("Ura? (find must be followed by a keyword)");
+            } else {
+                List<Task> matches = tasks.find(keyword);
+                ui.showFound(matches);
+            }
             return;
         } else if (input.contains("mark")) {
             String[] parts = input.split(" ");

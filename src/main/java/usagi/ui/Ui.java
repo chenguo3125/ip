@@ -115,6 +115,24 @@ public class Ui {
     }
 
     /**
+     * Displays tasks that match the search keyword.
+     * 
+     * @param tasks The list of tasks that match the search criteria
+     */
+    public void showFound(List<Task> tasks) {
+        System.out.println("____________________________________________________________");
+        System.out.println(" Here are the matching tasks in your list:");
+        if (tasks.isEmpty()) {
+            System.out.println(" (none)");
+        } else {
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println(" " + (i + 1) + "." + tasks.get(i).toString());
+            }
+        }
+        System.out.println("____________________________________________________________");
+    }
+
+    /**
      * Displays the goodbye message when the application exits.
      */
     public void showBye() {
