@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-abstract class Task {
+public abstract class Task {
     protected String title;
     protected Boolean isDone;
 
@@ -89,7 +89,7 @@ abstract class Task {
      *
      * @param raw String input of the date from the user.
      */
-    static LocalDate parseDateFlexible(String raw) {
+    public static LocalDate parseDateFlexible(String raw) {
         try { return LocalDate.parse(raw); } catch (DateTimeParseException ignore) {}
 
         for (String pattern : new String[]{"d/M/yyyy", "M/d/yyyy"}) {
@@ -105,7 +105,7 @@ abstract class Task {
      *
      * @param raw String input of the date with time from the user.
      */
-    static LocalDateTime parseDateTimeFlexible(String raw) {
+    public static LocalDateTime parseDateTimeFlexible(String raw) {
         try { return LocalDateTime.parse(raw); } catch (DateTimeParseException ignore) {}
 
         for (String pattern : new String[]{"yyyy-MM-dd HHmm", "d/M/yyyy HHmm", "M/d/yyyy HHmm"}) {
@@ -126,7 +126,7 @@ abstract class Task {
      *
      * @param raw String input of the date or time from the user.
      */
-    static LocalDateTime parseDateTimeOrDate(String raw) {
+    public static LocalDateTime parseDateTimeOrDate(String raw) {
         return parseDateTimeFlexible(raw);
     }
 }

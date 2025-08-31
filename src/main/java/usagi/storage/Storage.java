@@ -51,7 +51,7 @@ public class Storage {
      *
      * @return a list of tasks loaded from the storage file
      */
-    List<Task> load() throws UsagiException {
+    public List<Task> load() throws UsagiException {
         try {
             if (!Files.exists(filePath)) return new ArrayList<>();
             List<String> lines = Files.readAllLines(filePath, StandardCharsets.UTF_8);
@@ -77,7 +77,7 @@ public class Storage {
      *
      * @param tasks the list of tasks to save
      */
-    void save(List<Task> tasks) throws UsagiException {
+    public void save(List<Task> tasks) throws UsagiException {
         try {
             ensureParentDirs(filePath);
             List<String> lines = tasks.stream()
