@@ -1,0 +1,100 @@
+# 🐰 Usagi: A Smart Task Management Chatbot
+
+## Overview
+**Usagi** is an intelligent command-line and GUI task management application that helps users organize their daily tasks, deadlines, and events through natural language commands.
+
+## ✨ Key Features
+
+- **Task Types**: Support for `todo`, `deadline`, and `event` tasks
+- **Smart Date Parsing**: Flexible date/time input formats with `java.time` API
+- **Persistent Storage**: Automatic saving and loading of tasks from file
+- **Search Functionality**: Find tasks by keyword using the `find` command
+- **Date Filtering**: View tasks occurring on specific dates with `on <date>` command
+- **Dual Interface**: Both command-line and JavaFX GUI support
+
+## 🏗️ Architecture
+
+The project follows clean architecture principles with clear separation of concerns:
+
+1. **`usagi.ui`** - User interface and interaction handling
+2. **`usagi.storage`** - File I/O and data persistence
+3. **`usagi.parser`** - Command interpretation and validation
+4. **`usagi.task`** - Task models and business logic
+5. **`usagi.exception`** - Custom exception handling
+
+## 💻 Usage Examples
+
+```java
+// Create a deadline task
+deadline return book /by 2024-12-25 1800
+
+// Find tasks containing "book"
+find book
+
+// View tasks on a specific date
+on 2024-12-25
+
+// Mark task as complete
+mark 1
+```
+
+## 🧪 Testing
+
+- [x] **Unit Tests**: Comprehensive JUnit 5 test coverage
+- [x] **Integration Tests**: End-to-end functionality validation
+- [x] **Edge Cases**: Error handling and boundary condition testing
+- [ ] **Performance Tests**: Load testing for large task lists
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Java 11 or higher
+- Gradle 8.5+
+
+### Build and Run
+```bash
+# Build the project
+./gradlew build
+
+# Create executable JAR
+./gradlew shadowJar
+
+# Run the application
+java -jar build/libs/usagi.jar
+```
+
+## 🔧 Technical Implementation
+
+The application leverages modern Java features including:
+- **`java.time` API** for robust date/time handling
+- **Gradle** for build automation and dependency management
+- **Package organization** for maintainable code structure
+- **Exception handling** for graceful error management
+- **JavaFX** for modern GUI interface
+
+## 📝 Code Quality
+
+> *"Clean code is simple and direct. Clean code reads like well-written prose."* - Robert C. Martin
+
+- **JavaDoc**: Comprehensive documentation for all public APIs
+- **Coding Standards**: Consistent with Java coding conventions
+- **Encapsulation**: Protected fields with controlled access
+- **Modularity**: Clear separation of concerns across classes
+
+## 🔗 Related Resources
+
+- [Java Time API Documentation](https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/time/package-summary.html)
+- [Gradle User Guide](https://docs.gradle.org/current/userguide/userguide.html)
+- [JUnit 5 User Guide](https://junit.org/junit5/docs/current/user-guide/)
+
+## 🎯 Future Enhancements
+
+- [ ] **Priority Levels**: Add task priority management
+- [ ] **Categories/Tags**: Organize tasks by categories
+- [ ] **Recurring Tasks**: Support for repeating tasks
+- [ ] **Export/Import**: Data portability features
+- [ ] **Enhanced GUI**: More interactive JavaFX components
+
+---
+
+*Built with ❤️ using Java and modern software engineering practices*
