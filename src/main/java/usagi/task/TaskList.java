@@ -72,6 +72,16 @@ public class TaskList {
     }
 
     /**
+     * Gets a task at the specified index (0-based).
+     * 
+     * @param indexZeroBased The 0-based index of the task to retrieve
+     * @return The task at the specified index
+     */
+    public Task getByIndex(int indexZeroBased) {
+        return tasks.get(indexZeroBased);
+    }
+
+    /**
      * Returns the number of tasks in the list.
      * 
      * @return The size of the task list

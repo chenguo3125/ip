@@ -9,7 +9,6 @@ import usagi.task.Deadline;
 import usagi.task.Event;
 import usagi.task.ToDos;
 import usagi.storage.Storage;
-import usagi.ui.Ui;
 import usagi.exception.UsagiException;
 
 /**
@@ -36,47 +35,77 @@ public class Parser {
      * @param input The user input command to process
      * @param tasks The task list to operate on
      * @param storage The storage component for saving tasks
-     * @param ui The user interface component for displaying messages
+     * @return The response message as a string
      * @throws UsagiException If an error occurs during command processing
      */
-    public static void handle(String input, TaskList tasks, Storage storage, Ui ui) throws UsagiException {
+    public static String handle(String input, TaskList tasks, Storage storage) throws UsagiException {
         if (input.equals("list")) {
-            ui.showList(tasks.all());
-            return;
+            if (tasks.size() == 0) {
+                return "You have no tasks in your list.";
+            } else {
+                StringBuilder sb = new StringBuilder("Here are your tasks:\n");
+                for (int i = 0; i < tasks.size(); i++) {
+                    sb.append((i + 1) + "." + tasks.getByIndex(i).toString() + "\n");
+                }
+                return sb.toString().trim();
+            }
         } else if (input.startsWith("on ")) {
             String raw = input.substring(3).trim();
             LocalDate date = Task.parseDateFlexible(raw);
-            ui.showOnDate(tasks.tasksOn(date));
-            return;
+            List<Task> tasksOnDate = tasks.tasksOn(date);
+            if (tasksOnDate.isEmpty()) {
+                return "You have no tasks on " + date.format(java.time.format.DateTimeFormatter.ofPattern("MMM dd yyyy")) + ".";
+            } else {
+                StringBuilder sb = new StringBuilder("Here are your tasks on " + 
+                    date.format(java.time.format.DateTimeFormatter.ofPattern("MMM dd yyyy")) + ":\n");
+                for (int i = 0; i < tasksOnDate.size(); i++) {
+                    sb.append((i + 1) + "." + tasksOnDate.get(i).toString() + "\n");
+                }
+                return sb.toString().trim();
+            }
         } else if (input.startsWith("find ")) {
             String keyword = input.substring(5).trim();
             if (keyword.isEmpty()) {
-                ui.showLine("Ura? (find must be followed by a keyword)");
+                return "Ura? (find must be followed by a keyword)";
             } else {
                 List<Task> matches = tasks.find(keyword);
-                ui.showFound(matches);
+                if (matches.isEmpty()) {
+                    return "No tasks found matching your search.";
+                } else {
+                    StringBuilder sb = new StringBuilder("Here are the matching tasks in your list:\n");
+                    for (int i = 0; i < matches.size(); i++) {
+                        sb.append((i + 1) + "." + matches.get(i).toString() + "\n");
+                    }
+                    return sb.toString().trim();
+                }
             }
-            return;
         } else if (input.contains("mark")) {
             String[] parts = input.split(" ");
             String s = parts[0];
-            int num = Integer.parseInt(parts[1]);
-            Task t = tasks.get(num);
+            int num = Integer.parseInt(parts[1]) - 1; // Convert from 1-based to 0-based
+            if (num < 0 || num >= tasks.size()) {
+                return "Ura? Invalid task number.";
+            }
+            Task t = tasks.getByIndex(num);
             if (s.equals("unmark")) {
                 t.unmark();
-                ui.showUnmarked(t);
+                storage.save(tasks.all());
+                return "OK, I've marked this task as not done yet:\n  " + t.toString();
             } else {
                 t.mark();
-                ui.showMarked(t);
+                storage.save(tasks.all());
+                return "Nice! I've marked this task as done:\n  " + t.toString();
             }
-            return;
         } else if (input.contains("delete")) {
             String[] parts = input.split(" ", 2);
-            int num = Integer.parseInt(parts[1]);
-            Task removed = tasks.delete(num);
+            int num = Integer.parseInt(parts[1]) - 1; // Convert from 1-based to 0-based
+            if (num < 0 || num >= tasks.size()) {
+                return "Ura? Invalid task number.";
+            }
+            Task removed = tasks.delete(num + 1); // delete() expects 1-based index
             storage.save(tasks.all());
-            ui.showDeleted(removed, tasks.size());
-            return;
+            return "Noted. I've removed this task:\n  " + removed.toString() + 
+                   "\nNow you have " + tasks.size() + " task(s) in the list.";
         } else if (input.contains("todo") || input.contains("deadline") || input.contains("event")){
             if (input.contains("todo")) {
                 if (input.trim().contains(" ")) {
@@ -84,9 +113,10 @@ public class Parser {
                     Task task = new ToDos(parts[1], false);
                     tasks.add(task);
                     storage.save(tasks.all());
-                    ui.showAdded(task, tasks.size());
+                    return "Got it. I've added this task:\n  " + task.toString() + 
+                           "\nNow you have " + tasks.size() + " task(s) in the list.";
                 } else {
-                    ui.showLine("Ura? (todo must be followed by a description)");
+                    return "Ura? (todo must be followed by a description)";
                 }
             } else if (input.contains("deadline")) {
                 if (input.trim().contains(" ")) {
@@ -98,9 +128,10 @@ public class Parser {
                     Task task = new Deadline(title, false, by);
                     tasks.add(task);
                     storage.save(tasks.all());
-                    ui.showAdded(task, tasks.size());
+                    return "Got it. I've added this task:\n  " + task.toString() + 
+                           "\nNow you have " + tasks.size() + " task(s) in the list.";
                 } else {
-                    ui.showLine("Ura? (deadline must be followed by a description and a /by)");
+                    return "Ura? (deadline must be followed by a description and a /by)";
                 }
             } else {
                 if (input.trim().contains(" ")) {
@@ -114,16 +145,17 @@ public class Parser {
                     Task task = new Event(p1[1], false, from, to);
                     tasks.add(task);
                     storage.save(tasks.all());
-                    ui.showAdded(task, tasks.size());
+                    return "Got it. I've added this task:\n  " + task.toString() + 
+                           "\nNow you have " + tasks.size() + " task(s) in the list.";
                 } else {
-                    ui.showLine("Ura? (deadline must be followed by a description and a /from and /to)");
+                    return "Ura? (event must be followed by a description and a /from and /to)";
                 }
             }
-            return;
         }
 
-        ui.showUnknown();
+        return "Ura? I don't understand that command. Try: list, todo, deadline, event, mark, unmark, delete, find, or bye";
     }
+
 }
 
 

@@ -10,15 +10,18 @@ package usagi.ui;
  */
 
 import java.util.Scanner;
+import java.util.List;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import usagi.storage.Storage;
 import usagi.task.TaskList;
+import usagi.task.Task;
 import usagi.parser.Parser;
 import usagi.exception.UsagiException;
 
 public class Usagi {
     private Storage storage;
     private TaskList tasks;
-    private Ui ui;
 
     /**
      * Constructs a new Usagi chatbot instance with the specified file path for data storage.
@@ -26,13 +29,25 @@ public class Usagi {
      * @param filePath The path to the file where tasks will be stored and loaded from
      */
     public Usagi(String filePath) {
-        ui = new Ui();
         storage = new Storage(filePath);
         try {
             tasks = new TaskList(storage.load());
         } catch (UsagiException e) {
-            ui.showLoadingError();
+            System.out.println("Error loading tasks from file. Starting with empty task list.");
             tasks = new TaskList();
+        }
+    }
+
+    public String getResponse(String input) {
+        if (Parser.isExit(input)) {
+            return "Goodbye! See you next time!";
+        }
+        
+        try {
+            // Use the existing parser logic directly
+            return Parser.handle(input, tasks, storage);
+        } catch (UsagiException e) {
+            return "Ura? (" + e.getMessage() + ")";
         }
     }
 
@@ -41,18 +56,20 @@ public class Usagi {
      * until the user chooses to exit.
      */
     public void run() {
-        ui.showWelcome();
+        System.out.println("Hello! I'm Usagi, your personal task manager!");
+        System.out.println("What can I do for you?");
         Scanner scanner = new Scanner(System.in);
         while (true) {
             String input = scanner.nextLine();
             if (Parser.isExit(input)) {
-                ui.showBye();
+                System.out.println("Bye. Hope to see you again soon!");
                 break;
             }
             try {
-                Parser.handle(input, tasks, storage, ui);
+                String response = Parser.handle(input, tasks, storage);
+                System.out.println(response);
             } catch (UsagiException e) {
-                ui.showLine("Ura? (" + e.getMessage() + ")");
+                System.out.println("Ura? (" + e.getMessage() + ")");
             }
         }
     }
