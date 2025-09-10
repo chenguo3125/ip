@@ -28,6 +28,7 @@ public class TaskList {
      * @param tasks The initial list of tasks to include
      */
     public TaskList(List<Task> tasks) {
+        assert tasks != null : "Task list cannot be null";
         this.tasks = new ArrayList<>(tasks);
     }
 
@@ -46,6 +47,7 @@ public class TaskList {
      * @param task The task to add
      */
     public void add(Task task) {
+        assert task != null : "Task cannot be null";
         tasks.add(task);
     }
 
@@ -56,6 +58,12 @@ public class TaskList {
      * @return The deleted task
      */
     public Task delete(int indexOneBased) {
+        if (indexOneBased <= 0) {
+            throw new IndexOutOfBoundsException("Index must be positive (1-based), got: " + indexOneBased);
+        }
+        if (indexOneBased > tasks.size()) {
+            throw new IndexOutOfBoundsException("Index out of bounds, got: " + indexOneBased + ", size: " + tasks.size());
+        }
         Task t = tasks.get(indexOneBased - 1);
         tasks.remove(t);
         return t;
@@ -68,6 +76,12 @@ public class TaskList {
      * @return The task at the specified index
      */
     public Task get(int indexOneBased) {
+        if (indexOneBased <= 0) {
+            throw new IndexOutOfBoundsException("Index must be positive (1-based), got: " + indexOneBased);
+        }
+        if (indexOneBased > tasks.size()) {
+            throw new IndexOutOfBoundsException("Index out of bounds, got: " + indexOneBased + ", size: " + tasks.size());
+        }
         return tasks.get(indexOneBased - 1);
     }
 
@@ -78,6 +92,8 @@ public class TaskList {
      * @return The task at the specified index
      */
     public Task getByIndex(int indexZeroBased) {
+        assert indexZeroBased >= 0 : "Index must be non-negative (0-based), got: " + indexZeroBased;
+        assert indexZeroBased < tasks.size() : "Index out of bounds, got: " + indexZeroBased + ", size: " + tasks.size();
         return tasks.get(indexZeroBased);
     }
 
@@ -101,6 +117,7 @@ public class TaskList {
      * @return A list of tasks occurring on the specified date
      */
     public List<Task> tasksOn(LocalDate date) {
+        assert date != null : "Date cannot be null";
         List<Task> matches = new ArrayList<>();
         for (Task task : tasks) {
             if (task instanceof Deadline) {
@@ -129,6 +146,8 @@ public class TaskList {
      * @return A list of tasks containing the keyword in their description
      */
     public List<Task> find(String keyword) {
+        assert keyword != null : "Keyword cannot be null";
+        assert !keyword.trim().isEmpty() : "Keyword cannot be empty";
         List<Task> matches = new ArrayList<>();
         String lowerKeyword = keyword.toLowerCase();
         for (Task task : tasks) {

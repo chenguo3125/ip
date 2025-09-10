@@ -40,6 +40,8 @@ public abstract class Task {
      * @param done The completion status of the task
      */
     public Task(String title, boolean done) {
+        assert title != null : "Task title cannot be null";
+        assert !title.trim().isEmpty() : "Task title cannot be empty";
         this.title = title;
         this.isDone = done;
     }
@@ -82,13 +84,40 @@ public abstract class Task {
      * @throws IllegalArgumentException If the string format is invalid
      */
     public static Task fromLine(String line) {
+        if (line == null) {
+            throw new IllegalArgumentException("Line cannot be null");
+        }
+        if (line.trim().isEmpty()) {
+            throw new IllegalArgumentException("Line cannot be empty");
+        }
+        
         String[] p = line.split("\\s*\\|\\s*"); // splits on ' | ' with spaces ok
+        if (p.length < 3) {
+            throw new ArrayIndexOutOfBoundsException("Line must have at least 3 parts (type, done, description)");
+        }
+        
         String t = p[0], done = p[1], desc = p[2];
+        if (!"0".equals(done) && !"1".equals(done)) {
+            throw new IllegalArgumentException("Done status must be '0' or '1', got: " + done);
+        }
+        
         switch (t) {
-            case "T": return new ToDos(desc, "1".equals(done));
-            case "D": return new Deadline(desc, "1".equals(done), parseDateTimeOrDate(p[3]));
-            case "E": return new Event(desc, "1".equals(done), parseDateTimeFlexible(p[3]), parseDateTimeFlexible(p[4]));
-            default: throw new IllegalArgumentException("Bad type: " + t);
+        case "T": 
+            if (p.length != 3) {
+                throw new ArrayIndexOutOfBoundsException("Todo task must have exactly 3 parts");
+            }
+            return new ToDos(desc, "1".equals(done));
+        case "D": 
+            if (p.length != 4) {
+                throw new ArrayIndexOutOfBoundsException("Deadline task must have exactly 4 parts");
+            }
+            return new Deadline(desc, "1".equals(done), parseDateTimeOrDate(p[3]));
+        case "E": 
+            if (p.length != 5) {
+                throw new ArrayIndexOutOfBoundsException("Event task must have exactly 5 parts");
+            }
+            return new Event(desc, "1".equals(done), parseDateTimeFlexible(p[3]), parseDateTimeFlexible(p[4]));
+        default: throw new IllegalArgumentException("Bad type: " + t);
         }
     }
 
@@ -111,6 +140,13 @@ public abstract class Task {
      * @throws IllegalArgumentException If the date string cannot be parsed
      */
     public static LocalDate parseDateFlexible(String raw) {
+        if (raw == null) {
+            throw new IllegalArgumentException("Date string cannot be null");
+        }
+        if (raw.trim().isEmpty()) {
+            throw new IllegalArgumentException("Date string cannot be empty");
+        }
+        
         try { return LocalDate.parse(raw); } catch (DateTimeParseException ignore) {}
 
         for (String pattern : new String[]{"d/M/yyyy", "M/d/yyyy"}) {
@@ -132,6 +168,13 @@ public abstract class Task {
      * @throws IllegalArgumentException If the date-time string cannot be parsed
      */
     public static LocalDateTime parseDateTimeFlexible(String raw) {
+        if (raw == null) {
+            throw new IllegalArgumentException("DateTime string cannot be null");
+        }
+        if (raw.trim().isEmpty()) {
+            throw new IllegalArgumentException("DateTime string cannot be empty");
+        }
+        
         try { return LocalDateTime.parse(raw); } catch (DateTimeParseException ignore) {}
 
         for (String pattern : new String[]{"yyyy-MM-dd HHmm", "d/M/yyyy HHmm", "M/d/yyyy HHmm"}) {
