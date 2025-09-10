@@ -28,11 +28,28 @@ public class DialogBox extends HBox {
             fxmlLoader.setRoot(this);
             fxmlLoader.load();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Failed to load DialogBox FXML: " + e.getMessage());
+            // Create a fallback UI programmatically
+            createFallbackUI();
         }
 
-        dialog.setText(text);
-        displayPicture.setImage(img);
+        if (dialog != null) {
+            dialog.setText(text != null ? text : "");
+        }
+        if (displayPicture != null && img != null) {
+            displayPicture.setImage(img);
+        }
+    }
+    
+    /**
+     * Creates a fallback UI if FXML loading fails.
+     */
+    private void createFallbackUI() {
+        dialog = new Label();
+        displayPicture = new ImageView();
+        this.getChildren().addAll(dialog, displayPicture);
+        this.setSpacing(10);
+        this.setAlignment(Pos.CENTER_LEFT);
     }
 
 

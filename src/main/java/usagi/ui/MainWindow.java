@@ -42,12 +42,31 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+        if (usagi == null) {
+            System.err.println("Usagi instance not initialized");
+            return;
+        }
+        
         String input = userInput.getText();
-        String response = usagi.getResponse(input);
-        dialogContainer.getChildren().addAll(
-                DialogBox.getUserDialog(input, userImage),
-                DialogBox.getUsagiDialog(response, usagiImage)
-        );
-        userInput.clear();
+        if (input == null || input.trim().isEmpty()) {
+            return; // Don't process empty input
+        }
+        
+        try {
+            String response = usagi.getResponse(input);
+            dialogContainer.getChildren().addAll(
+                    DialogBox.getUserDialog(input, userImage),
+                    DialogBox.getUsagiDialog(response, usagiImage)
+            );
+            userInput.clear();
+        } catch (Exception e) {
+            // Handle any unexpected errors gracefully
+            String errorMessage = "Sorry, something went wrong: " + e.getMessage();
+            dialogContainer.getChildren().addAll(
+                    DialogBox.getUserDialog(input, userImage),
+                    DialogBox.getUsagiDialog(errorMessage, usagiImage)
+            );
+            userInput.clear();
+        }
     }
 }
