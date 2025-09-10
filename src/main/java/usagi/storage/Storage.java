@@ -30,6 +30,8 @@ public class Storage {
      * @param filePath The path to the file where tasks will be stored
      */
     public Storage(String filePath) {
+        assert filePath != null : "File path cannot be null";
+        assert !filePath.trim().isEmpty() : "File path cannot be empty";
         this.filePath = Path.of(filePath);
     }
 
@@ -42,6 +44,7 @@ public class Storage {
      * @throws IOException If the directories cannot be created
      */
     private static Path ensureParentDirs(Path p) throws IOException {
+        assert p != null : "Path cannot be null";
         Path parent = p.getParent();
         if (parent != null) Files.createDirectories(parent);
         return p;
@@ -83,6 +86,7 @@ public class Storage {
      * @throws UsagiException If an error occurs during file writing
      */
     public void save(List<Task> tasks) throws UsagiException {
+        assert tasks != null : "Task list cannot be null";
         try {
             ensureParentDirs(filePath);
             List<String> lines = tasks.stream()

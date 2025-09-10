@@ -26,6 +26,9 @@ public class Event extends Task {
      */
     public Event(String title, boolean done, LocalDateTime from, LocalDateTime to) {
         super(title, done);
+        assert from != null : "Event 'from' time cannot be null";
+        assert to != null : "Event 'to' time cannot be null";
+        assert !from.isAfter(to) : "Event start time cannot be after end time";
         this.from = from;
         this.to = to;
     }
