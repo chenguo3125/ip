@@ -52,6 +52,7 @@ shadowJar {
     archiveBaseName = "usagi"
     archiveFileName = "usagi.jar"
     archiveClassifier = null
+    dependsOn("distZip", "distTar")
 }
 
 run{

@@ -25,6 +25,7 @@ public class Parser {
      * @return true if the input is an exit command, false otherwise
      */
     public static boolean isExit(String input) {
+        assert input != null : "Input cannot be null";
         return input.equals("bye");
     }
 
@@ -39,6 +40,9 @@ public class Parser {
      * @throws UsagiException If an error occurs during command processing
      */
     public static String handle(String input, TaskList tasks, Storage storage) throws UsagiException {
+        assert input != null : "Input cannot be null";
+        assert tasks != null : "TaskList cannot be null";
+        assert storage != null : "Storage cannot be null";
         if (input.equals("list")) {
             if (tasks.size() == 0) {
                 return "You have no tasks in your list.";

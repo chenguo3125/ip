@@ -29,6 +29,8 @@ public class Usagi {
      * @param filePath The path to the file where tasks will be stored and loaded from
      */
     public Usagi(String filePath) {
+        assert filePath != null : "File path cannot be null";
+        assert !filePath.trim().isEmpty() : "File path cannot be empty";
         storage = new Storage(filePath);
         try {
             tasks = new TaskList(storage.load());
@@ -39,6 +41,7 @@ public class Usagi {
     }
 
     public String getResponse(String input) {
+        assert input != null : "Input cannot be null";
         if (Parser.isExit(input)) {
             return "Goodbye! See you next time!";
         }
