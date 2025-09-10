@@ -10,27 +10,30 @@ package usagi.ui;
  */
 
 import java.util.Scanner;
-import java.util.List;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import usagi.storage.Storage;
 import usagi.task.TaskList;
-import usagi.task.Task;
 import usagi.parser.Parser;
 import usagi.exception.UsagiException;
 
 public class Usagi {
     private Storage storage;
     private TaskList tasks;
+    private Parser parser;
 
     /**
      * Constructs a new Usagi chatbot instance with the specified file path for data storage.
      * 
      * @param filePath The path to the file where tasks will be stored and loaded from
+     * @throws IllegalArgumentException if filePath is null or empty
      */
     public Usagi(String filePath) {
-        assert filePath != null : "File path cannot be null";
-        assert !filePath.trim().isEmpty() : "File path cannot be empty";
+        if (filePath == null) {
+            throw new IllegalArgumentException("File path cannot be null");
+        }
+        if (filePath.trim().isEmpty()) {
+            throw new IllegalArgumentException("File path cannot be empty");
+        }
+        
         storage = new Storage(filePath);
         try {
             tasks = new TaskList(storage.load());
@@ -38,17 +41,23 @@ public class Usagi {
             System.out.println("Error loading tasks from file. Starting with empty task list.");
             tasks = new TaskList();
         }
+        parser = new Parser(tasks, storage);
     }
 
+    /**
+     * Gets a response for the given input without running the full application loop.
+     * This is useful for GUI applications.
+     * 
+     * @param input The user input to process
+     * @return The response message
+     */
     public String getResponse(String input) {
-        assert input != null : "Input cannot be null";
         if (Parser.isExit(input)) {
             return "Goodbye! See you next time!";
         }
         
         try {
-            // Use the existing parser logic directly
-            return Parser.handle(input, tasks, storage);
+            return parser.handle(input);
         } catch (UsagiException e) {
             return "Ura? (" + e.getMessage() + ")";
         }
@@ -59,7 +68,7 @@ public class Usagi {
      * until the user chooses to exit.
      */
     public void run() {
-        System.out.println("Hello! I'm Usagi, your personal task manager!");
+        System.out.println("Hello! I'm Usagi, your personal task manager.");
         System.out.println("What can I do for you?");
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -69,7 +78,7 @@ public class Usagi {
                 break;
             }
             try {
-                String response = Parser.handle(input, tasks, storage);
+                String response = parser.handle(input);
                 System.out.println(response);
             } catch (UsagiException e) {
                 System.out.println("Ura? (" + e.getMessage() + ")");
