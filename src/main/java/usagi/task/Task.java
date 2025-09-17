@@ -117,6 +117,11 @@ public abstract class Task {
                 throw new ArrayIndexOutOfBoundsException("Event task must have exactly 5 parts");
             }
             return new Event(desc, "1".equals(done), parseDateTimeFlexible(p[3]), parseDateTimeFlexible(p[4]));
+        case "R":
+            if (p.length != 8) {
+                throw new ArrayIndexOutOfBoundsException("Recurring task must have exactly 8 parts");
+            }
+            return RecurringTask.fromLine(line);
         default: throw new IllegalArgumentException("Bad type: " + t);
         }
     }

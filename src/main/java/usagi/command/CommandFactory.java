@@ -19,6 +19,9 @@ public class CommandFactory {
     private static final String COMMAND_DELETE = "delete";
     private static final String COMMAND_FIND = "find";
     private static final String COMMAND_ON = "on";
+    private static final String COMMAND_RECURRING = "recurring";
+    private static final String COMMAND_ADVANCE = "advance";
+    private static final String COMMAND_UPCOMING = "upcoming";
     
     private final TaskList tasks;
     private final Storage storage;
@@ -71,8 +74,14 @@ public class CommandFactory {
             return new AddDeadlineCommand(tasks, storage, trimmedInput);
         } else if (trimmedInput.startsWith(COMMAND_EVENT + " ")) {
             return new AddEventCommand(tasks, storage, trimmedInput);
+        } else if (trimmedInput.startsWith(COMMAND_RECURRING + " ")) {
+            return new AddRecurringTaskCommand(tasks, storage, trimmedInput);
+        } else if (trimmedInput.startsWith(COMMAND_ADVANCE)) {
+            return new AdvanceRecurringCommand(tasks, storage, trimmedInput);
+        } else if (trimmedInput.startsWith(COMMAND_UPCOMING)) {
+            return new UpcomingRecurringCommand(tasks, trimmedInput);
         } else {
-            throw new UsagiException("I don't understand that command. Try: list, todo, deadline, event, mark, unmark, delete, find, or bye");
+            throw new UsagiException("I don't understand that command. Try: list, todo, deadline, event, recurring, mark, unmark, delete, find, advance, upcoming, or bye");
         }
     }
 }
