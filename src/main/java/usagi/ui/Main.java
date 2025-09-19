@@ -22,6 +22,20 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+            
+            // Load CSS styles
+            try {
+                String dialogBoxCss = Main.class.getResource("/css/dialog-box.css").toExternalForm();
+                String mainCss = Main.class.getResource("/css/main.css").toExternalForm();
+                scene.getStylesheets().add(dialogBoxCss);
+                scene.getStylesheets().add(mainCss);
+                System.out.println("CSS files loaded successfully:");
+                System.out.println("  - dialog-box.css: " + dialogBoxCss);
+                System.out.println("  - main.css: " + mainCss);
+            } catch (Exception e) {
+                System.err.println("Failed to load CSS files: " + e.getMessage());
+            }
+            
             stage.setScene(scene);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
@@ -60,9 +74,14 @@ public class Main extends Application {
             sendButton.setOnAction(e -> {
                 String userInput = input.getText();
                 if (!userInput.trim().isEmpty()) {
-                    String response = usagi.getResponse(userInput);
-                    output.appendText("You: " + userInput + "\n");
-                    output.appendText("Usagi: " + response + "\n\n");
+                    try {
+                        String response = usagi.getResponse(userInput);
+                        output.appendText("You: " + userInput + "\n");
+                        output.appendText("Usagi: " + response + "\n\n");
+                    } catch (usagi.exception.UsagiException ex) {
+                        output.appendText("You: " + userInput + "\n");
+                        output.appendText("Usagi: ERROR - " + ex.getMessage() + "\n\n");
+                    }
                     input.clear();
                 }
             });

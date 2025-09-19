@@ -50,17 +50,14 @@ public class Usagi {
      * 
      * @param input The user input to process
      * @return The response message
+     * @throws UsagiException if there's an error processing the input
      */
-    public String getResponse(String input) {
+    public String getResponse(String input) throws UsagiException {
         if (Parser.isExit(input)) {
             return "Goodbye! See you next time!";
         }
         
-        try {
-            return parser.handle(input);
-        } catch (UsagiException e) {
-            return "Ura? (" + e.getMessage() + ")";
-        }
+        return parser.handle(input);
     }
 
     /**

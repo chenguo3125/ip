@@ -60,11 +60,12 @@ public class MainWindow extends AnchorPane {
             );
             userInput.clear();
         } catch (Exception e) {
-            // Handle any unexpected errors gracefully
-            String errorMessage = "Sorry, something went wrong: " + e.getMessage();
+            // Handle errors with red error bubble
+            String errorMessage = e.getMessage() != null ? e.getMessage() : "An unexpected error occurred";
+            System.out.println("Exception caught: " + e.getClass().getSimpleName() + " - " + errorMessage);
             dialogContainer.getChildren().addAll(
                     DialogBox.getUserDialog(input, userImage),
-                    DialogBox.getUsagiDialog(errorMessage, usagiImage)
+                    DialogBox.getUsagiErrorDialog(errorMessage, usagiImage)
             );
             userInput.clear();
         }

@@ -2,7 +2,7 @@
 
 ## AI tool used and command
 - **AI**: Cursor
-- **Command**:  improve the code quality of AddRecurringTask.java, RecurringTask.java
+- **Command**:  improve the code quality of AddRecurringTask.java and RecurringTask.java.
 
 ## Summary
 Enhanced code quality for the recurring tasks implementation with better maintainability, readability, and robustness.

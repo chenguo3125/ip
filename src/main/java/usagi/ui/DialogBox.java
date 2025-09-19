@@ -33,8 +33,13 @@ public class DialogBox extends HBox {
             createFallbackUI();
         }
 
+        // Set spacing between profile picture and message bubble
+        this.setSpacing(12);
+
         if (dialog != null) {
             dialog.setText(text != null ? text : "");
+            // Apply default user styling
+            dialog.getStyleClass().add("label");
         }
         if (displayPicture != null && img != null) {
             displayPicture.setImage(img);
@@ -46,9 +51,10 @@ public class DialogBox extends HBox {
      */
     private void createFallbackUI() {
         dialog = new Label();
+        dialog.getStyleClass().add("label"); // Default to user styling
         displayPicture = new ImageView();
         this.getChildren().addAll(dialog, displayPicture);
-        this.setSpacing(10);
+        this.setSpacing(12); // Consistent spacing with main constructor
         this.setAlignment(Pos.CENTER_LEFT);
     }
 
@@ -67,6 +73,32 @@ public class DialogBox extends HBox {
     public static DialogBox getUsagiDialog(String text, Image img) {
         var db = new DialogBox(text, img);
         db.flip();
+        // Apply Usagi-specific styling
+        if (db.dialog != null) {
+            db.dialog.getStyleClass().clear();
+            db.dialog.getStyleClass().add("reply-label");
+        }
+        return db;
+    }
+    
+    /**
+     * Creates a Usagi dialog for error messages with red background.
+     * @param text The error message to display
+     * @param img The image to display
+     * @return A DialogBox with red error styling
+     */
+    public static DialogBox getUsagiErrorDialog(String text, Image img) {
+        var db = new DialogBox(text, img);
+        db.flip();
+        
+        // Apply error styling
+        if (db.dialog != null) {
+            db.dialog.getStyleClass().clear();
+            db.dialog.getStyleClass().add("error-label");
+            db.dialog.getStyleClass().add("test-red"); // Also add test class
+            System.out.println("Error dialog created with text: '" + text + "', CSS classes: " + db.dialog.getStyleClass());
+        }
+        
         return db;
     }
 }
