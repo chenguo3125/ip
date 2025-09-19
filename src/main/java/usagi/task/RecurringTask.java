@@ -91,6 +91,12 @@ public class RecurringTask extends Task {
     
     /**
      * Constructs a new RecurringTask with default interval of 1.
+     * 
+     * @param title The title/description of the recurring task
+     * @param done The completion status of the task
+     * @param startTime The start time of the recurring task
+     * @param endTime The end time of the recurring task
+     * @param pattern The recurrence pattern (daily, weekly, monthly, yearly)
      */
     public RecurringTask(String title, boolean done, LocalDateTime startTime, LocalDateTime endTime, 
                         RecurrencePattern pattern) {
@@ -115,7 +121,7 @@ public class RecurringTask extends Task {
     
     @Override
     public String toString() {
-        String intervalText = interval == 1 ? "" : " (" + interval + " times " + pattern.getDisplayName() + ")";
+        String intervalText = interval == 1 ? "" : " (every " + interval + " " + pattern.getDisplayName() + "s)";
         return "[R]" + super.toString() + " (from: " + UI.format(startTime) + " to: " + UI.format(endTime) + 
                ", " + pattern.getDisplayName() + intervalText + ", next: " + nextOccurrence + ")";
     }
