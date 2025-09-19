@@ -64,11 +64,6 @@
     -fx-font-weight: bold !important;
 }
 
-/* Test class to verify CSS is working */
-.test-red {
-    -fx-background-color: #ff0000 !important;
-    -fx-text-fill: #ffffff !important;
-}
 
 
 /* Special styling for success messages */

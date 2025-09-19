@@ -29,9 +29,6 @@ public class Main extends Application {
                 String mainCss = Main.class.getResource("/css/main.css").toExternalForm();
                 scene.getStylesheets().add(dialogBoxCss);
                 scene.getStylesheets().add(mainCss);
-                System.out.println("CSS files loaded successfully:");
-                System.out.println("  - dialog-box.css: " + dialogBoxCss);
-                System.out.println("  - main.css: " + mainCss);
             } catch (Exception e) {
                 System.err.println("Failed to load CSS files: " + e.getMessage());
             }
