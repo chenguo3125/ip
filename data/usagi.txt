@@ -1,12 +1,4 @@
 T | 1 | ps1
 D | 1 | wireframe | 2025-12-02T00:00
 E | 0 | hackthon | 2025-02-18T00:00 | 2025-02-19T00:00
-T | 0 | ps2
-T | 0 | ps4
-R | 0 | gym | 2024-01-15T00:00 | 2024-01-15T00:00 | weekly | 3 | 2024-01-15
-T | 1 | hm1
-T | 1 | hm2
-T | 1 | Buy groceries
-D | 0 | fly home | 2026-10-10T00:00
-T | 0 | ip
-R | 0 | Monthly review | 2025-01-01T10:00 | 2025-01-01T11:00 | monthly | 2 | 2025-01-01
+R | 0 | Weekly team meeting | 2025-01-15T14:00 | 2026-01-15T15:00 | weekly | 1 | 2025-01-15

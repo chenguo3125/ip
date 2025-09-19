@@ -34,6 +34,24 @@ public class MainWindow extends AnchorPane {
     /** Injects the Usagi instance */
     public void setUsagi(Usagi u) {
         usagi = u;
+        showWelcomeMessage();
+    }
+    
+    /**
+     * Shows a welcome message when the chatbot starts.
+     */
+    private void showWelcomeMessage() {
+        String welcomeMessage = "Ura! This is Usagi! 🐰\n\n" +
+                               "I can help you manage your tasks. Here's what you can do:\n" +
+                               "• Add tasks: todo, deadline, event, recurring\n" +
+                               "• View tasks: list, find, upcoming\n" +
+                               "• Manage tasks: mark, unmark, delete\n" +
+                               "• Exit: bye\n\n" +
+                               "Try typing 'list' to see your current tasks, or 'todo Buy groceries' to add a new task!";
+        
+        dialogContainer.getChildren().add(
+            DialogBox.getUsagiDialog(welcomeMessage, usagiImage)
+        );
     }
 
     /**
