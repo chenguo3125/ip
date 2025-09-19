@@ -106,9 +106,9 @@ public class DialogBox extends HBox {
                              "-fx-font-size: 14px; " +
                              "-fx-font-weight: bold;");
         
-        // Position notification at the top center
+        // Position notification at the bottom center
         StackPane notificationPane = new StackPane(notification);
-        notificationPane.setAlignment(Pos.TOP_CENTER);
+        notificationPane.setAlignment(Pos.BOTTOM_CENTER);
         notificationPane.setStyle("-fx-background-color: transparent;");
         
         // Find the dialog container (VBox) to add the notification
@@ -120,8 +120,8 @@ public class DialogBox extends HBox {
         if (parent instanceof VBox) {
             VBox dialogContainer = (VBox) parent;
             
-            // Add notification at the top of the dialog container
-            dialogContainer.getChildren().add(0, notificationPane);
+            // Add notification at the bottom of the dialog container (right above input bar)
+            dialogContainer.getChildren().add(notificationPane);
             
             // Create fade in animation
             FadeTransition fadeIn = new FadeTransition(Duration.millis(200), notification);

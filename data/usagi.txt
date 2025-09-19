@@ -9,3 +9,4 @@ T | 1 | hm2
 T | 1 | Buy groceries
 D | 0 | fly home | 2026-10-10T00:00
 T | 0 | ip
+R | 0 | Monthly review | 2025-01-01T10:00 | 2025-01-01T11:00 | monthly | 2 | 2025-01-01
